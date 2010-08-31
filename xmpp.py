@@ -29,7 +29,7 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext.webapp import xmpp_handlers
 
-import model
+from model.note import Note
 
 def get_current_user(sender):
     logging.debug('sender = %s' % (sender))
@@ -45,7 +45,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         keyword = message.arg
 
         logging.info('keyword = %s' % (message.body))
-        queries = model.Note.all().filter('owner =', user).search(keyword)
+        queries = Note.all().filter('owner =', user).search(keyword)
         results = []
         for note in queries:
             results.append('* %s' % note.title)
@@ -58,7 +58,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         if message is None:
             return
         
-        note = model.Note(
+        note = Note(
                     owner=get_current_user(message.sender),
                     title=message.body.strip(),
                 )

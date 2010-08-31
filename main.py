@@ -33,9 +33,11 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 def get_url_mapping():
     import xmpp
+    from view import shownotes
 
     return [
         ('/_ah/xmpp/message/chat/', xmpp.XmppHandler),
+        ('/', shownotes.DisplayHandler),
     ]
 
 def main():
