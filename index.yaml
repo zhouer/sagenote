@@ -1,8 +1,10 @@
 indexes:
 - kind: Note
   properties:
-  - name: priority
-  - name: progress
+  - name: owner
   - name: create_time
-  - name: complete_time
-  - name: due_time
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: priority
