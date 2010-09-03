@@ -37,6 +37,7 @@ def get_url_mapping():
 
     return [
         ('/_ah/xmpp/message/chat/', xmpp.XmppHandler),
+        ('/rpc.*', shownotes.RpcHandler),
         ('/', shownotes.DisplayHandler),
     ]
 

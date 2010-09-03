@@ -3,9 +3,14 @@
 	<head>
 		<meta charset="UTF-8"> 
 		<link rel="stylesheet" href="/static/styles.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="/static/shownotes.js"></script>
 		<title>Sagenote</title>
 	</head>
 	<body>
+		<input type="button" id="delete" value="Delete">
+		<input type="button" id="refresh" value="Refresh">
+
 		<table>
 			<thead>
 				<tr>
@@ -16,12 +21,12 @@
 					<td id="progress">Progress</td>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="tasksTable">
 
 
 				{% for note in notes %}
-				<tr>
-					<td><input type="checkbox" value="{{ note.key }}"></td>
+				<tr id="{{ note.key }}">
+					<td><input type="checkbox" name="keys[]" value="{{ note.key }}"></td>
 					<td>{{ note.create_time|date:"M j, Y H:i:s T" }}</td>
 					<td>{{ note.title }}</td>
 					<td>{{ note.priority }}</td>

@@ -37,6 +37,12 @@ def get_current_user(sender):
     return users.User(email=email)
 
 class XmppHandler(xmpp_handlers.CommandHandler):
+    def reply_query(self, message, query):
+        results = []
+        for note in query:
+            results.append('* %s' % note.title)
+        message.reply('%s\ntotal %d results.' % ('\n'.join(results), len(results)))
+
     def search_command(self, message=None):
         if message is None:
             return
@@ -45,11 +51,16 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         keyword = message.arg
 
         logging.info('keyword = %s' % (message.body))
-        queries = Note.all().filter('owner =', user).search(keyword)
-        results = []
-        for note in queries:
-            results.append('* %s' % note.title)
-        message.reply('%s\ntotal %d results.' % ('\n'.join(results), len(results)))
+        query = Note.all().filter('owner =', user).search(keyword)
+        self.reply_query(message, query)
+
+    def list_command(self, message=None):
+        if message is None:
+            return
+
+        user = get_current_user(message.sender)
+        query = Note.all().filter('owner =', user).order('create_time')
+        self.reply_query(message, query)
 
     def unhandled_command(self, message=None):
         pass
