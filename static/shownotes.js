@@ -46,15 +46,9 @@ function deleteSelected()
 	});
 }
 
-function create_time()
+function setSortMethod()
 {
-	sort_method = 'create_time';
-	refresh();
-}
-
-function priority()
-{
-	sort_method = 'priority';
+	sort_method = $(this).attr('id');
 	refresh();
 }
 
@@ -94,8 +88,10 @@ $(document).ready(function() {
 
 	$("#hide_complete").bind('change', refresh)
 
-	$("#create_time").bind('click', create_time);
-	$("#priority").bind('click', priority);
+	$("#create_time").bind('click', setSortMethod);
+	$("#title").bind('click', setSortMethod);
+	$("#priority").bind('click', setSortMethod);
+	$("#progress").bind('click', setSortMethod);
 
 	refresh();
 });

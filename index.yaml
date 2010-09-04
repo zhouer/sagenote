@@ -7,4 +7,14 @@ indexes:
 - kind: Note
   properties:
   - name: owner
+  - name: title
+
+- kind: Note
+  properties:
+  - name: owner
   - name: priority
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: progress

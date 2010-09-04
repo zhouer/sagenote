@@ -3,6 +3,10 @@
 	margin-right: 15%;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 table { 
 	border-collapse: collapse;
 } 
