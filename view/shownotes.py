@@ -58,13 +58,15 @@ class RpcHandler(webapp.RequestHandler):
 
             notes = {'notes': []}
             for note in query:
-                d = { 'key': str(note.key()),
-                      'create_time': str(note.create_time),
-                      'title': note.title,
-                      'priority': note.priority,
-                      'progress': note.progress,
-                    }
-                notes['notes'].append(d)
+                # TODO: add showall parameter
+                if note.progress < 100:
+                    d = { 'key': str(note.key()),
+                          'create_time': str(note.create_time),
+                          'title': note.title,
+                          'priority': note.priority,
+                          'progress': note.progress,
+                        }
+                    notes['notes'].append(d)
 
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(simplejson.dumps(notes))
@@ -80,9 +82,14 @@ class RpcHandler(webapp.RequestHandler):
                 return
 
             note = db.get(key)
-            note.title = params.get('title', note.title)
-            note.priority = int(params.get('priority', note.priority))
-            note.progress = int(params.get('progress', note.progress))
+
+            if params.has_key('title'):
+                note.title = params['title']
+            if params.has_key('priority'):
+                note.priority = int(params['priority'])
+            if params.has_key('progress'):
+                note.progress = int(params['progress'])
+
             note.put()
             self.redirect('/')
 
