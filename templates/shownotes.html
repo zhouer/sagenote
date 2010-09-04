@@ -13,6 +13,15 @@
 		<input type="button" id="delete" value="Delete">
 		<input type="button" id="refresh" value="Refresh">
 
+		Sort by:
+		<select id="sort_method">
+			<option value="create_time">Create time</option>
+			<option value="title">title</option>
+			<option value="priority">priority</option>
+			<option value="progress">progress</option>
+			<option value="due_time">Due time</option>
+		</select>
+
 		<input type="checkbox" id="hide_complete">
 		Hide complete
 
@@ -21,10 +30,10 @@
 			<thead>
 				<tr>
 					<td></td>
-					<td id="create_time" class="clickable">Create time</td>
-					<td id="title" class="clickable">Title</td>
-					<td id="priority" class="clickable">Priority</td>
-					<td id="progress" class="clickable">Progress</td>
+					<td id="title">Title</td>
+					<td id="priority">Priority</td>
+					<td id="progress">Progress</td>
+					<td id="due_time">Due time</td>
 				</tr>
 			</thead>
 			<tbody id="tasksTable">

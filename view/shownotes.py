@@ -53,7 +53,8 @@ class RpcHandler(webapp.RequestHandler):
             hide_complete = params.get('hide_complete', 'false').upper() == 'TRUE'
 
             sort_method = params.get('sort', 'create_time')
-            if sort_method in ('create_time', 'title', 'priority', 'progress'):
+            if sort_method in ('create_time', 'due_time',
+                               'title', 'priority', 'progress'):
                 query.order(sort_method)
 
             notes = {'notes': []}
@@ -64,6 +65,7 @@ class RpcHandler(webapp.RequestHandler):
                           'title': note.title,
                           'priority': note.priority,
                           'progress': note.progress,
+                          'due_time': str(note.due_time),
                         }
                     notes['notes'].append(d)
 

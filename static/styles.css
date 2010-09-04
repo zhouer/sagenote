@@ -1,17 +1,19 @@
 #center {
 	margin-left: 15%;
 	margin-right: 15%;
-}
-
-.clickable {
-	cursor: pointer;
+	width: 70%;
 }
 
 table { 
+	width: 100%;
 	border-collapse: collapse;
 } 
 
 td {
 	border: 1px solid #999;
 	padding: 3px;
+}
+
+td#title {
+	width: 70%;
 }
