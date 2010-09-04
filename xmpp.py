@@ -72,6 +72,8 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         note = Note(
                     owner=get_current_user(message.sender),
                     title=message.body.strip(),
+                    priority=0,
+                    progress=0,
                 )
         note.put()
         message.reply('OK')

@@ -15,24 +15,13 @@
 			<thead>
 				<tr>
 					<td></td>
-					<td id="create">Create time</td>
+					<td id="create_time">Create time</td>
 					<td id="title">Title</td>
 					<td id="priority">Priority</td>
 					<td id="progress">Progress</td>
 				</tr>
 			</thead>
 			<tbody id="tasksTable">
-
-
-				{% for note in notes %}
-				<tr id="{{ note.key }}">
-					<td><input type="checkbox" name="keys[]" value="{{ note.key }}"></td>
-					<td>{{ note.create_time|date:"M j, Y H:i:s T" }}</td>
-					<td>{{ note.title }}</td>
-					<td>{{ note.priority }}</td>
-					<td>{{ note.progress }}</td>
-				</tr>
-				{% endfor %}
 			</tbody>
 		</table>
 	</body>

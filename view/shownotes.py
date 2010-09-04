@@ -37,15 +37,24 @@ class RpcHandler(webapp.RequestHandler):
             for p in [s.split('=') for s in tmp]:
                 params[p[0]] = p[1]
 
+        if not params.has_key('action'):
+            params['action'] = 'read'
+
         if params['action'] == 'create':
-            note = Note(title=params.get('title', 'empty title'),
+            note = Note(title=params.get('title', 'No title'),
                         priority=int(params.get('priority', 0)),
                         progress=int(params.get('progress', 0)))
             note.put()
             self.redirect('/')
 
         elif params['action'] == 'read':
-            query = Note.all().filter('owner =', user).order('create_time')
+            query = Note.all().filter('owner =', user)
+
+            sort_method = params.get('sort', 'create_time')
+            if sort_method == 'create_time':
+                query.order('create_time')
+            elif sort_method == 'priority':
+                query.order('priority')
 
             notes = {'notes': []}
             for note in query:

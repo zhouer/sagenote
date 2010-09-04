@@ -10,9 +10,14 @@ function appendNote(note)
 	$("#tasksTable").append(s);
 }
 
-function refresh()
+function refresh(sort)
 {
-	$.get('/rpc?action=read', function(data) {
+	url = '/rpc?action=read';
+	if (sort != undefined) {
+		url += '&sort=' + sort;
+	}
+
+	$.get(url, function(data) {
 		$("#tasksTable").children().remove();
 		for(key in data.notes) {
 			appendNote(data.notes[key]);
@@ -31,7 +36,20 @@ function deleteSelected()
 	});
 }
 
+function create_time()
+{
+	refresh('create_time');
+}
+
+function priority()
+{
+	refresh('priority');
+}
+
 $(document).ready(function() {  
 	$("#delete").bind('click', deleteSelected);
 	$("#refresh").bind('click', refresh);
-});  
+	$("#create_time").bind('click', create_time);
+	$("#priority").bind('click', priority);
+	refresh();
+});
