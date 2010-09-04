@@ -4,8 +4,8 @@ function appendNote(note)
 	    "<td><input type='checkbox' name='keys[]' value='" + note.key + "'></td>" +
 	    "<td>" + note.create_time + "</td>" +
 	    "<td>" + note.title + "</td>" +
-	    "<td>" + note.priority + "</td>" +
-	    "<td>" + note.progress + "</td>" +
+	    "<td class='priority_field'>" + note.priority + "</td>" +
+	    "<td class='progress_field'>" + note.progress + "</td>" +
 	    "</tr>";
 	$("#tasksTable").append(s);
 }
@@ -22,6 +22,9 @@ function update()
 		for(key in data.notes) {
 			appendNote(data.notes[key]);
 		}
+
+		$(".priority_field").bind('click', update_priority);
+		$(".progress_field").bind('click', update_progress);
 	});
 }
 
@@ -52,10 +55,31 @@ function priority()
 	update('priority');
 }
 
+function update_priority()
+{
+	key = $(this).parent().attr('id');
+	tmp = window.prompt("Please input new priority", $(this).text());
+	if (tmp) {
+		url = "/rpc?action=update&key=" + key + "&priority=" + tmp;
+		$.get(url, refresh);
+	}
+}
+
+function update_progress()
+{
+	key = $(this).parent().attr('id');
+	tmp = window.prompt("Please input new progress", $(this).text());
+	if (tmp) {
+		url = "/rpc?action=update&key=" + key + "&progress=" + tmp;
+		$.get(url, refresh);
+	}
+}
+
 $(document).ready(function() {  
 	$("#delete").bind('click', deleteSelected);
 	$("#refresh").bind('click', refresh);
 	$("#create_time").bind('click', create_time);
 	$("#priority").bind('click', priority);
+
 	refresh();
 });
