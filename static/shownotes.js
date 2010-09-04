@@ -13,13 +13,9 @@ function appendNote(note)
 function refresh()
 {
 	$.get('/rpc?action=read', function(data) {
-		notes = data.notes.sort(function(x, y) {
-			return x.order - y.order;
-		});
-
 		$("#tasksTable").children().remove();
-		for(key in notes) {
-			appendNote(notes[key]);
+		for(key in data.notes) {
+			appendNote(data.notes[key]);
 		}
 	});
 }
