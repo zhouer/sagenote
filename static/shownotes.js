@@ -10,11 +10,11 @@ function appendNote(note)
 	$("#tasksTable").append(s);
 }
 
-function refresh(sort)
+function update()
 {
 	url = '/rpc?action=read';
-	if (sort != undefined) {
-		url += '&sort=' + sort;
+	if (arguments.length == 1) {
+		url += '&sort=' + arguments[0];
 	}
 
 	$.get(url, function(data) {
@@ -36,14 +36,20 @@ function deleteSelected()
 	});
 }
 
+function refresh()
+{
+	// XXX: call update indirecttly to ignore click mouse event
+	update();
+}
+
 function create_time()
 {
-	refresh('create_time');
+	update('create_time');
 }
 
 function priority()
 {
-	refresh('priority');
+	update('priority');
 }
 
 $(document).ready(function() {  
