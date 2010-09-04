@@ -50,6 +50,8 @@ class RpcHandler(webapp.RequestHandler):
         elif params['action'] == 'read':
             query = Note.all().filter('owner =', user)
 
+            hide_complete = params.get('hide_complete', 'false').upper() == 'TRUE'
+
             sort_method = params.get('sort', 'create_time')
             if sort_method == 'create_time':
                 query.order('create_time')
@@ -58,8 +60,7 @@ class RpcHandler(webapp.RequestHandler):
 
             notes = {'notes': []}
             for note in query:
-                # TODO: add showall parameter
-                if note.progress < 100:
+                if note.progress < 100 or not hide_complete:
                     d = { 'key': str(note.key()),
                           'create_time': str(note.create_time),
                           'title': note.title,

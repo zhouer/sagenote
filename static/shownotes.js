@@ -1,3 +1,5 @@
+var sort_method = undefined;
+
 function appendNote(note)
 {
 	s = "<tr id='" + note.key + "'>" +
@@ -10,11 +12,16 @@ function appendNote(note)
 	$("#tasksTable").append(s);
 }
 
-function update()
+function refresh()
 {
 	url = '/rpc?action=read';
-	if (arguments.length == 1) {
-		url += '&sort=' + arguments[0];
+
+	if (sort_method != undefined) {
+		url += '&sort=' + sort_method;
+	}
+
+	if ($("#hide_complete").attr('checked')) {
+		url += '&hide_complete=true';
 	}
 
 	$.get(url, function(data) {
@@ -39,20 +46,25 @@ function deleteSelected()
 	});
 }
 
-function refresh()
-{
-	// XXX: call update indirecttly to ignore click mouse event
-	update();
-}
-
 function create_time()
 {
-	update('create_time');
+	sort_method = 'create_time';
+	refresh();
 }
 
 function priority()
 {
-	update('priority');
+	sort_method = 'priority';
+	refresh();
+}
+
+function addNote()
+{
+	tmp = window.prompt("Title of new note", "");
+	if (tmp) {
+		url = "/rpc?action=create&title=" + tmp;
+		$.get(url, refresh);
+	}
 }
 
 function update_priority()
@@ -76,8 +88,12 @@ function update_progress()
 }
 
 $(document).ready(function() {  
+	$("#add").bind('click', addNote);
 	$("#delete").bind('click', deleteSelected);
 	$("#refresh").bind('click', refresh);
+
+	$("#hide_complete").bind('change', refresh)
+
 	$("#create_time").bind('click', create_time);
 	$("#priority").bind('click', priority);
 
