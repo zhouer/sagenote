@@ -66,34 +66,45 @@ function deleteSelected()
 	});
 }
 
-function onTextInput(keyEvent)
+function onKeyup(keyEvent)
 {
 	if (keyEvent.keyCode != 13) {
 		return;
 	}
+	createNote();
+}
 
-	tmp = $("#new_note").attr("value");
+function createNote()
+{
+	var title = $("#new_note").attr("value");
 	$("#new_note").attr("value", "");
-	if (tmp) {
-		url = "/rpc?action=create&title=" + tmp;
-		$.get(url, refresh);
+	if (title) {
+		var request = {
+			action: "create",
+			title: title
+		};
+		$.post("/rpc", request, refresh);
 	}
 }
 
 function update_priority()
 {
-	var key = $(this).parent().parent().attr('id');
-	var priority = $(this).attr('value');
-	var url = "/rpc?action=update&key=" + key + "&priority=" + priority;
-	$.get(url, refresh);
+	var request = {
+		action: "update",
+		key: $(this).parent().parent().attr('id'),
+		priority: $(this).attr('value')
+	}
+	$.post("/rpc", request, refresh);
 }
 
 function update_progress()
 {
-	var key = $(this).parent().parent().attr('id');
-	var progress = $(this).attr('value');
-	var url = "/rpc?action=update&key=" + key + "&progress=" + progress;
-	$.get(url, refresh);
+	var request = {
+		action: "update",
+		key: $(this).parent().parent().attr('id'),
+		progress: $(this).attr('value')
+	}
+	$.post("/rpc", request, refresh);
 }
 
 $(document).ready(function() {  
@@ -103,7 +114,8 @@ $(document).ready(function() {
 	$("#sort_method").bind('change', refresh)
 	$("#hide_complete").bind('change', refresh)
 
-	$("#new_note").bind('keyup', onTextInput);
+	$("#new_note").bind('keyup', onKeyup);
+	$("#create").bind('click', createNote);
 
 	refresh();
 });

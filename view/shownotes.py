@@ -29,30 +29,14 @@ class RpcHandler(webapp.RequestHandler):
             # FIXME:
             return
 
-        pos = self.request.uri.find('?')
-        params = {}
-        if pos != -1:
-            tmp = self.request.uri[pos + 1:]
-            tmp = tmp.split('&')
-            for p in [s.split('=') for s in tmp]:
-                params[p[0]] = p[1]
+        action = self.request.get('action', 'read')
 
-        if not params.has_key('action'):
-            params['action'] = 'read'
-
-        if params['action'] == 'create':
-            note = Note(title=params.get('title', 'No title'),
-                        priority=int(params.get('priority', 0)),
-                        progress=int(params.get('progress', 0)))
-            note.put()
-            self.redirect('/')
-
-        elif params['action'] == 'read':
+        if action == 'read':
             query = Note.all().filter('owner =', user)
 
-            hide_complete = params.get('hide_complete', 'false').upper() == 'TRUE'
+            hide_complete = self.request.get('hide_complete', 'false').upper() == 'TRUE'
 
-            sort_method = params.get('sort', 'create_time')
+            sort_method = self.request.get('sort', 'create_time')
             if sort_method in ('create_time', 'due_time',
                                'title', 'priority', 'progress'):
                 query.order(sort_method)
@@ -72,28 +56,39 @@ class RpcHandler(webapp.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(simplejson.dumps(notes))
 
-        elif params['action'] == 'update':
-            if not params.has_key('key'):
-                # FIXME:
-                return
+        elif action == 'delete':
+            db.get(db.Key(self.request.get('key', None))).delete()
+            self.redirect('/')
 
-            key = db.Key(params['key'])
-            if not key:
-                # FIXME:
-                return
+    def post(self):
+        user = users.get_current_user()
+        if not user:
+            # FIXME:
+            return
 
-            note = db.get(key)
-
-            if params.has_key('title'):
-                note.title = params['title']
-            if params.has_key('priority'):
-                note.priority = int(params['priority'])
-            if params.has_key('progress'):
-                note.progress = int(params['progress'])
-
+        action = self.request.get('action', 'read')
+        if action == 'create':
+            note = Note(title=self.request.get('title', 'No title'),
+                        priority=int(self.request.get('priority', 0)),
+                        progress=int(self.request.get('progress', 0)))
             note.put()
             self.redirect('/')
 
-        elif params['action'] == 'delete':
-            db.get(db.Key(params['key'])).delete()
+        elif action == 'update':
+            note = db.get(db.Key(self.request.get('key', None)))
+            if not note:
+                # FIXME:
+                return
+
+            title = self.request.get('title', None)
+            priority = self.request.get('priority', None)
+            progress = self.request.get('progress', None)
+            if title:
+                note.title = title
+            if priority:
+                note.priority = int(priority)
+            if progress:
+                note.progress = int(progress)
+
+            note.put()
             self.redirect('/')
