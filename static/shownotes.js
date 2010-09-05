@@ -66,9 +66,14 @@ function deleteSelected()
 	});
 }
 
-function addNote()
+function onTextInput(keyEvent)
 {
-	tmp = window.prompt("Title of new note", "");
+	if (keyEvent.keyCode != 13) {
+		return;
+	}
+
+	tmp = $("#new_note").attr("value");
+	$("#new_note").attr("value", "");
 	if (tmp) {
 		url = "/rpc?action=create&title=" + tmp;
 		$.get(url, refresh);
@@ -92,12 +97,13 @@ function update_progress()
 }
 
 $(document).ready(function() {  
-	$("#add").bind('click', addNote);
 	$("#delete").bind('click', deleteSelected);
 	$("#refresh").bind('click', refresh);
 
 	$("#sort_method").bind('change', refresh)
 	$("#hide_complete").bind('change', refresh)
+
+	$("#new_note").bind('keyup', onTextInput);
 
 	refresh();
 });
