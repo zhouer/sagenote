@@ -31,6 +31,20 @@ import string
 
 from google.appengine.ext import db, search
 
+def normalize_keywords(keywords):
+    # split by comma.
+    keywords = keywords.split(',')
+
+    # merge spaces.
+    keywords = map(lambda k: re.sub('\s+', ' ', k.strip()), keywords)
+
+    # remove empty keyword
+    keywords = filter(lambda k: bool(k), keywords)
+
+    logging.info('keywords: %s' % ', '.join(keywords))
+    return keywords
+
+
 class Note(search.SearchableModel):
     # mandatory
     owner = db.UserProperty(required=True, auto_current_user_add=True)
@@ -46,15 +60,18 @@ class Note(search.SearchableModel):
     due_time = db.DateTimeProperty()
 
     def build_keyword(self):
-        logging.debug('build_keyword')
         sre = re.match(r'^\[(.*?)\]', self.title.strip())
         if sre is not None:
-            keywords = sre.group(1).split(',')
-            self.keywords = filter(lambda k: k, 
-                    map(lambda k: ' '.join(string.split(k)), keywords))
-            logging.info('keywords: %s' % ', '.join(self.keywords))
+            self.keywords = normalize_keywords(sre.group(1))
+
+    def before_put(self):
+        self.build_keyword()
+
+    def after_put(self):
+        pass
 
     def put(self):
-        self.build_keyword()
+        self.before_put()
         search.SearchableModel.put(self)
+        self.after_put()
     

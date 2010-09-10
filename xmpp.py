@@ -50,7 +50,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         user = get_current_user(message.sender)
         keyword = message.arg
 
-        logging.info('keyword = %s' % (message.body))
+        logging.info('keyword = %s' % (keyword))
         query = Note.all().filter('owner =', user).search(keyword)
         self.reply_query(message, query)
 
