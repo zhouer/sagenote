@@ -52,6 +52,7 @@ function refresh()
 
 		$("select.priority").bind('change', update_priority);
 		$("select.progress").bind('change', update_progress);
+		$(".title_field").bind('click', show_note_detail);
 	});
 }
 
@@ -105,6 +106,15 @@ function update_progress()
 		progress: $(this).attr('value')
 	}
 	$.post("/rpc", request, refresh);
+}
+
+function show_note_detail()
+{
+	var url = "/rpc?action=read";
+	url += "&key=" + $(this).parent().attr('id');
+	$.get(url, function(data) {
+		alert(data);
+	});
 }
 
 $(document).ready(function() {  
