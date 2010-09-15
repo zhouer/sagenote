@@ -10,10 +10,12 @@
 	<body>
 		<input type="hidden" id="key" value="{{ key }}">
 		Title: <br>
-		<input type="text" id="title_field" value="{{ title }}"> <br>
+		<input type="text" id="title_field" value="{{ title }}">
+		<br><br>
 
 		Content: <br>
-		<textarea id="content_field">{{ content }}</textarea> <br>
+		<textarea id="content_field" rows="10">{{ content }}</textarea>
+		<br><br>
 
 		<input type="button" id="update" value="Update">
 		<input type="button" id="cancel" value="Cancel">
