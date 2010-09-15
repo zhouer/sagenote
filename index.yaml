@@ -7,7 +7,19 @@ indexes:
 - kind: Note
   properties:
   - name: owner
+  - name: create_time
+    direction: desc
+
+- kind: Note
+  properties:
+  - name: owner
   - name: title
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: title
+    direction: desc
 
 - kind: Note
   properties:
@@ -17,4 +29,27 @@ indexes:
 - kind: Note
   properties:
   - name: owner
+  - name: priority
+    direction: desc
+
+- kind: Note
+  properties:
+  - name: owner
   - name: progress
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: progress
+    direction: desc
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: due_time
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: due_time
+    direction: desc

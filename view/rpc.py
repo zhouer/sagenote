@@ -14,8 +14,11 @@ class RpcHandler(webapp.RequestHandler):
         hide_complete = self.request.get('hide_complete', 'false').upper() == 'TRUE'
 
         sort_method = self.request.get('sort', 'create_time')
-        if sort_method in ('create_time', 'due_time',
-                           'title', 'priority', 'progress'):
+        if sort_method in ('create_time', '-create_time',
+                           'due_time', '-due_time',
+                           'title', '-title',
+                           'priority', '-priority',
+                           'progress', '-progress', ):
             query.order(sort_method)
 
         notes = {'notes': []}
