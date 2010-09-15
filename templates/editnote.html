@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"> 
+		<link rel="stylesheet" href="/static/styles.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="/static/editnote.js"></script>
+		<title>Sagenote</title>
+	</head>
+	<body>
+		<input type="hidden" id="key" value="{{ key }}">
+		Title: <br>
+		<input type="text" id="title_field" value="{{ title }}"> <br>
+
+		Content: <br>
+		<textarea id="content_field">{{ content }}</textarea> <br>
+
+		<input type="button" id="update" value="Update">
+		<input type="button" id="cancel" value="Cancel">
+	</body>
+</html>

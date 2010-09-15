@@ -110,11 +110,9 @@ function update_progress()
 
 function show_note_detail()
 {
-	var url = "/rpc?action=read";
-	url += "&key=" + $(this).parent().attr('id');
-	$.get(url, function(data) {
-		alert(data);
-	});
+	var url = "/editnote/";
+	url += $(this).parent().attr('id');
+	window.location.href = url;
 }
 
 $(document).ready(function() {  
