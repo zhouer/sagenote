@@ -1,5 +1,6 @@
-function update()
-{
+(function() {
+
+var update = function() {
 	var request = {
 		action: "update",
 		key: $("#key").attr('value'),
@@ -9,14 +10,15 @@ function update()
 	$.post("/rpc", request, function(data) {
 		window.location.href = "/";
 	});
-}
+};
 
-function cancel()
-{
+var cancel = function() {
 	window.location.href = "/";
-}
+};
 
 $(document).ready(function() {  
 	$("#update").bind('click', update);
 	$("#cancel").bind('click', cancel);
 });
+
+})();
