@@ -14,42 +14,50 @@ indexes:
   properties:
   - name: owner
   - name: title
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: title
     direction: desc
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: priority
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: priority
     direction: desc
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: progress
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: progress
     direction: desc
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: due_time
+  - name: create_time
 
 - kind: Note
   properties:
   - name: owner
   - name: due_time
     direction: desc
+  - name: create_time

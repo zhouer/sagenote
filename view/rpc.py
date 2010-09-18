@@ -9,29 +9,40 @@ from model.note import Note
 
 class RpcHandler(webapp.RequestHandler):
     def readall(self, user):
-        query = Note.all().filter('owner =', user)
+        qstr = ["WHERE owner = :1"]
 
         hide_complete = self.request.get('hide_complete', 'false').upper() == 'TRUE'
+        if hide_complete:
+            qstr.append("AND progress < 100")
 
         sort_method = self.request.get('sort', 'create_time')
-        if sort_method in ('create_time', '-create_time',
-                           'due_time', '-due_time',
-                           'title', '-title',
-                           'priority', '-priority',
-                           'progress', '-progress', ):
-            query.order(sort_method)
+        if sort_method not in ('create_time', '-create_time', 'due_time',
+                               '-due_time', 'title', '-title', 'priority',
+                               '-priority', 'progress', '-progress', ):
+            return
+
+        qstr.append('ORDER BY')
+        if sort_method.startswith('-'):
+            qstr.append(sort_method[1:])
+            qstr.append('DESC')
+        else:
+            qstr.append(sort_method)
+
+        if not sort_method.endswith('create_time'):
+            qstr.append(', create_time')
+
+        query = Note.gql(' '.join(qstr), user)
 
         notes = {'notes': []}
         for note in query:
-            if note.progress < 100 or not hide_complete:
-                d = { 'key': str(note.key()),
-                      'create_time': str(note.create_time),
-                      'title': note.title,
-                      'priority': note.priority,
-                      'progress': note.progress,
-                      'due_time': str(note.due_time),
-                    }
-                notes['notes'].append(d)
+            d = { 'key': str(note.key()),
+                  'create_time': str(note.create_time),
+                  'title': note.title,
+                  'priority': note.priority,
+                  'progress': note.progress,
+                  'due_time': str(note.due_time),
+                }
+            notes['notes'].append(d)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(simplejson.dumps(notes))
