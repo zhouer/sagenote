@@ -77,8 +77,10 @@ function onKeyup(keyEvent)
 
 function createNote()
 {
-	var title = $("#new_note").attr("value");
-	$("#new_note").attr("value", "");
+	var node = $("#new_note");
+	var title = node.attr("value");
+	node.attr("value", "");
+
 	if (title) {
 		var request = {
 			action: "create",

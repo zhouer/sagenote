@@ -11,10 +11,6 @@ class RpcHandler(webapp.RequestHandler):
     def readall(self, user):
         qstr = ["WHERE owner = :1"]
 
-        hide_complete = self.request.get('hide_complete', 'false').upper() == 'TRUE'
-        if hide_complete:
-            qstr.append("AND progress < 100")
-
         sort_method = self.request.get('sort', 'create_time')
         if sort_method not in ('create_time', '-create_time', 'due_time',
                                '-due_time', 'title', '-title', 'priority',
@@ -31,18 +27,21 @@ class RpcHandler(webapp.RequestHandler):
         if not sort_method.endswith('create_time'):
             qstr.append(', create_time')
 
+        hide_complete = self.request.get('hide_complete', '').upper() == 'TRUE'
+
         query = Note.gql(' '.join(qstr), user)
 
         notes = {'notes': []}
         for note in query:
-            d = { 'key': str(note.key()),
-                  'create_time': str(note.create_time),
-                  'title': note.title,
-                  'priority': note.priority,
-                  'progress': note.progress,
-                  'due_time': str(note.due_time),
-                }
-            notes['notes'].append(d)
+            if not hide_complete or note.progress < 100:
+                d = { 'key': str(note.key()),
+                      'create_time': str(note.create_time),
+                      'title': note.title,
+                      'priority': note.priority,
+                      'progress': note.progress,
+                      'due_time': str(note.due_time),
+                    }
+                notes['notes'].append(d)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(simplejson.dumps(notes))
