@@ -1,6 +1,17 @@
 (function() {
 
 var appendNote = function(note) {
+
+	var m = note.title.match(/(https?:\/\/[^ ]+)( *\((.*)\))?/);
+	if (m != null) {
+		if (m[3] == null) {
+			m[3] = m[1];
+		}
+
+		var a = ["<a href='", m[1], "' target='_blank'>", m[3], "</a>"];
+		note.title = note.title.replace(m[0], a.join(""));
+	}
+
 	var s = ["<tr id='", note.key, "'>",
 	             "<td><input type='checkbox' name='keys[]' value='", note.key, "'></td>",
 	             "<td class='title_field'>", note.title, "</td>",
