@@ -4,7 +4,7 @@ var appendNote = function(note) {
 	note.title = note.title.replace(/(https?:\/\/[^ ]+)( *\(([^)]*)\))?/g,
 		function(whole, url, tmp, title) {
 			if (title == null) title = url;
-			return ["<a href='", url, "' target='_blank'>", title, "</a>"].join("");
+			return ["<a href='", url, "'>", title, "</a>"].join("");
 		});
 
 	var s = ["<tr id='", note.key, "'>",
@@ -107,6 +107,11 @@ var show_note_detail = function () {
 	window.location.href = url;
 };
 
+var open_link = function() {
+	window.open($(this).attr("href"), "_blank");
+	return false;
+};
+
 $(document).ready(function() {  
 	$("#delete").bind("click", deleteSelected);
 	$("#refresh").bind("click", refresh);
@@ -119,6 +124,7 @@ $(document).ready(function() {
 
 	$("select.priority").live("change", update_priority);
 	$("select.progress").live("change", update_progress);
+	$("a").live("click", open_link);
 	$("td.title_field").live("click", show_note_detail);
 
 	refresh();
