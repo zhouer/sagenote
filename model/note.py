@@ -56,8 +56,6 @@ class Note(search.SearchableModel):
     keywords = db.StringListProperty()
     priority = db.IntegerProperty()
     progress = db.IntegerProperty()
-    complete_time = db.DateTimeProperty()
-    due_time = db.DateTimeProperty()
 
     def build_keyword(self):
         sre = re.match(r'^\[(.*?)\]', self.title.strip())

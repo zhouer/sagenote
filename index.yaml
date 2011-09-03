@@ -48,16 +48,3 @@ indexes:
   - name: progress
     direction: desc
   - name: create_time
-
-- kind: Note
-  properties:
-  - name: owner
-  - name: due_time
-  - name: create_time
-
-- kind: Note
-  properties:
-  - name: owner
-  - name: due_time
-    direction: desc
-  - name: create_time

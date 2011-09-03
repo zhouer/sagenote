@@ -12,7 +12,6 @@ var appendNote = function(note) {
 	             "<td class='title_field'>", note.title, "</td>",
 	             "<td class='priority_field'></td>",
 	             "<td class='progress_field'></td>",
-	             "<td class='due_time_field'>", note.due_time, "</td>",
 	         "</tr>"];
 
 	var trnode = $(s.join(""));

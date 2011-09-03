@@ -12,9 +12,8 @@ class RpcHandler(webapp.RequestHandler):
         qstr = ["WHERE owner = :1"]
 
         sort_method = self.request.get('sort', 'create_time')
-        if sort_method not in ('create_time', '-create_time', 'due_time',
-                               '-due_time', 'title', '-title', 'priority',
-                               '-priority', 'progress', '-progress', ):
+        if sort_method not in ('create_time', '-create_time', 'title', '-title',
+                               'priority', '-priority', 'progress', '-progress', ):
             return
 
         qstr.append('ORDER BY')
@@ -39,7 +38,6 @@ class RpcHandler(webapp.RequestHandler):
                       'title': note.title,
                       'priority': note.priority,
                       'progress': note.progress,
-                      'due_time': str(note.due_time),
                     }
                 notes['notes'].append(d)
 
@@ -59,8 +57,6 @@ class RpcHandler(webapp.RequestHandler):
                  'keywords': note.keywords,
                  'priority': note.priority,
                  'progress': note.progress,
-                 'complete_time': str(note.complete_time),
-                 'due_time': str(note.due_time),
                }
 
         self.response.headers['Content-Type'] = 'application/json'
