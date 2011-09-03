@@ -54,13 +54,16 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         query = Note.all().filter('owner =', user).search(keyword)
         self.reply_query(message, query)
 
-    def list_command(self, message=None):
+    def list_command(self, message=None, progress_threshold=100):
         if message is None:
             return
 
         user = get_current_user(message.sender)
-        query = Note.all().filter('owner =', user).order('create_time')
+        query = Note.all().filter('owner =', user).filter('progress <', progress_threshold).order('progress').order('create_time')
         self.reply_query(message, query)
+
+    def listall_command(self, message=None):
+	self.list_command(message, 1000)
 
     def unhandled_command(self, message=None):
         pass
